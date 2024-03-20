@@ -116,13 +116,14 @@
     {
         static void Main(string[] args)
         {
-            var testFile = "D:\\Algotitms and data structures\\assigment4_group\\assigment4\\code2\\text";
+            var testFile = "D:\\Algotitms and data structures\\4555555\\assignment-4\\Program\\text";
             var text = File.ReadAllText(testFile);
             var freqChar = new Dictionary<char, int>();
             var minHeap = new MinHeap();
 
             foreach (var letter in text)
             {
+                
                 if (freqChar.ContainsKey(letter))
                     freqChar[letter] += 1;
                 else
@@ -132,9 +133,6 @@
             foreach (var pair in freqChar)
             {
                 var key = pair.Key.ToString();
-                if (key == "\n") key = "\\n";
-                else if (key == "\r") key = "\\r";
-                else if (key == " ") key = "_";
 
                 var node = new Node()
                 {
@@ -166,19 +164,21 @@
             if (minHeap.data.Count > 0)
             {
                 var root = minHeap.Pop();
-
-                foreach (var pair in freqChar)
+                if (root != null)
                 {
-                    var path = new List<int>();
-                    path = root.Search(pair.Key.ToString(), path);
-                    Console.WriteLine(
-                        $"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}");
-                    foreach (var bit in path)
+                    foreach (var pair in freqChar)
                     {
-                        Console.Write(bit);
+                        var path = new List<int>();
+                        path = root.Search(pair.Key.ToString(), path);
+                        Console.Write(
+                            $"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}: ");
+                        if (path != null)
+                            foreach (var bit in path)
+                            {
+                                Console.Write(bit);
+                            }
+                        Console.WriteLine();
                     }
-
-                    Console.WriteLine();
                 }
             }
         }
