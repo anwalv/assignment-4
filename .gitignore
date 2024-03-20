@@ -1,5 +1,6 @@
-Program/*
+./Program/bin
+./Program/obj
 .idea
 .git
 !.gitignore
-!Program/Program.cs
+
