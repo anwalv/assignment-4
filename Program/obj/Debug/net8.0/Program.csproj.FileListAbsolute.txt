@@ -1,0 +1,15 @@
+/Users/mac/RiderProjects/assignment-4/Program/bin/Debug/net8.0/Program
+/Users/mac/RiderProjects/assignment-4/Program/bin/Debug/net8.0/Program.deps.json
+/Users/mac/RiderProjects/assignment-4/Program/bin/Debug/net8.0/Program.runtimeconfig.json
+/Users/mac/RiderProjects/assignment-4/Program/bin/Debug/net8.0/Program.dll
+/Users/mac/RiderProjects/assignment-4/Program/bin/Debug/net8.0/Program.pdb
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.GeneratedMSBuildEditorConfig.editorconfig
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.AssemblyInfoInputs.cache
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.AssemblyInfo.cs
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.csproj.CoreCompileInputs.cache
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.sourcelink.json
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.dll
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/refint/Program.dll
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.pdb
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/Program.genruntimeconfig.cache
+/Users/mac/RiderProjects/assignment-4/Program/obj/Debug/net8.0/ref/Program.dll
