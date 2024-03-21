@@ -187,10 +187,14 @@ namespace Huffman
             var encodedText = new List<int>();
             using (StreamReader reader = new StreamReader(outputFilePath))
             {
-                while (!reader.EndOfStream)
+                var line = "";
+                while (( line = reader.ReadLine()) != null)
                 {
-                    var bit = reader.Read();
-                    encodedText.Add(bit - '0'); // Converting char to int
+                    foreach (char character in line)
+                    {
+                        int bit = int.Parse(character.ToString());
+                        encodedText.Add(bit);
+                    }
                 }
             }
 
