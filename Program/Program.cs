@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-
 namespace Huffman
 {
     public class Node
@@ -122,11 +118,13 @@ namespace Huffman
         {
             var testFile = "/Users/mac/RiderProjects/assignment-4.1/Program/text";
             var outputFilePath = "/Users/mac/RiderProjects/assignment-4.1/Program/compressed_text.txt";
+            var decodedFilePath = "/Users/mac/RiderProjects/assignment-4.1/Program/decoded_text.txt";
+
+            // Encoding part
             var text = File.ReadAllText(testFile);
             var freqChar = new Dictionary<char, int>();
             var minHeap = new MinHeap();
             var codeDictionary = new Dictionary<char, List<int>>();
-            var encodedText = new List<int>();
 
             foreach (var letter in text)
             {
@@ -150,8 +148,6 @@ namespace Huffman
                 minHeap.Add(node);
             }
 
-            minHeap.Print();
-
             while (minHeap.data.Count > 1)
             {
                 var m1 = minHeap.Pop();
@@ -164,7 +160,6 @@ namespace Huffman
                     RightChild = m2
                 };
                 minHeap.Add(m1_m2);
-                minHeap.Print();
             }
 
             if (minHeap.data.Count > 0)
@@ -188,15 +183,56 @@ namespace Huffman
                 }
             }
 
-            // Encoding text
-            foreach (var letter in text)
+            // Decoding part
+            var encodedText = new List<int>();
+            using (StreamReader reader = new StreamReader(outputFilePath))
             {
-                var path = codeDictionary[letter];
-                foreach (var bit in path)
+                while (!reader.EndOfStream)
                 {
-                    encodedText.Add(bit);
+                    var bit = reader.Read();
+                    encodedText.Add(bit - '0'); // Converting char to int
                 }
             }
+
+            var decodedText = new List<char>();
+            var currentCode = new List<int>();
+            foreach (var bit in encodedText)
+            {
+                currentCode.Add(bit);
+                foreach (var pair in codeDictionary)
+                {
+                    if (ListsEqual(currentCode, pair.Value))
+                    {
+                        decodedText.Add(pair.Key);
+                        currentCode.Clear();
+                        break;
+                    }
+                }
+            }
+            static bool ListsEqual(List<int> list1, List<int> list2)
+            {
+                if (list1.Count != list2.Count)
+                    return false;
+
+                for (int i = 0; i < list1.Count; i++)
+                {
+                    if (list1[i] != list2[i])
+                        return false;
+                }
+
+                return true;
+            }
+
+            // Writing decoded text to file
+            using (StreamWriter writer = new StreamWriter(decodedFilePath))
+            {
+                foreach (var character in decodedText)
+                {
+                    writer.Write(character);
+                }
+            }
+
+            Console.WriteLine("Text has been decoded and written to file successfully.");
 
             // Writing encoded text to console
             Console.WriteLine("Encoded text:");
@@ -216,6 +252,10 @@ namespace Huffman
             }
 
             Console.WriteLine("Text has been encoded and written to file successfully.");
+            Console.WriteLine("Decoded text:");
+            string decodedContent = File.ReadAllText(decodedFilePath);
+            Console.WriteLine(decodedContent);
         }
     }
 }
+
