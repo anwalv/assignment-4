@@ -1,4 +1,8 @@
-﻿namespace Huffman
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+namespace Huffman
 {
     public class Node
     {
@@ -116,14 +120,16 @@
     {
         static void Main(string[] args)
         {
-            var testFile = "D:\\Algotitms and data structures\\4555555\\assignment-4\\Program\\text";
+            var testFile = "/Users/mac/RiderProjects/assignment-4.1/Program/text";
+            var outputFilePath = "/Users/mac/RiderProjects/assignment-4.1/Program/compressed_text.txt";
             var text = File.ReadAllText(testFile);
             var freqChar = new Dictionary<char, int>();
             var minHeap = new MinHeap();
+            var codeDictionary = new Dictionary<char, List<int>>();
+            var encodedText = new List<int>();
 
             foreach (var letter in text)
             {
-                
                 if (freqChar.ContainsKey(letter))
                     freqChar[letter] += 1;
                 else
@@ -170,8 +176,8 @@
                     {
                         var path = new List<int>();
                         path = root.Search(pair.Key.ToString(), path);
-                        Console.Write(
-                            $"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}: ");
+                        codeDictionary.Add(pair.Key, path);
+                        Console.Write($"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}: ");
                         if (path != null)
                             foreach (var bit in path)
                             {
@@ -181,6 +187,35 @@
                     }
                 }
             }
+
+            // Encoding text
+            foreach (var letter in text)
+            {
+                var path = codeDictionary[letter];
+                foreach (var bit in path)
+                {
+                    encodedText.Add(bit);
+                }
+            }
+
+            // Writing encoded text to console
+            Console.WriteLine("Encoded text:");
+            foreach (var bit in encodedText)
+            {
+                Console.Write(bit);
+            }
+            Console.WriteLine();
+
+            // Writing encoded text to file
+            using (StreamWriter writer = new StreamWriter(outputFilePath))
+            {
+                foreach (var bit in encodedText)
+                {
+                    writer.Write(bit);
+                }
+            }
+
+            Console.WriteLine("Text has been encoded and written to file successfully.");
         }
     }
 }
