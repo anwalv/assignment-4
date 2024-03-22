@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+
 namespace Huffman
 {
     public class Node
@@ -116,16 +120,17 @@ namespace Huffman
     {
         static void Main(string[] args)
         {
-            var testFile = "/Users/mac/RiderProjects/assignment-4.1/Program/text";
-            var outputFilePath = "/Users/mac/RiderProjects/assignment-4.1/Program/compressed_text.txt";
-            var decodedFilePath = "/Users/mac/RiderProjects/assignment-4.1/Program/decoded_text.txt";
+            var testFile = "D:\\Algotitms and data structures\\4555555\\assignment-4\\Program\\text";
+            var outputFilePath = "D:\\Algotitms and data structures\\4555555\\assignment-4\\Program\\compressed_text.txt";
+            var decodedFilePath = "D:\\Algotitms and data structures\\4555555\\assignment-4\\Program\\decoded_text.txt";
 
             // Encoding part
+            // зчитуємо файл
             var text = File.ReadAllText(testFile);
             var freqChar = new Dictionary<char, int>();
             var minHeap = new MinHeap();
             var codeDictionary = new Dictionary<char, List<int>>();
-
+            // додаємо до словника символ та його частоту
             foreach (var letter in text)
             {
                 if (freqChar.ContainsKey(letter))
@@ -133,7 +138,7 @@ namespace Huffman
                 else
                     freqChar[letter] = 1;
             }
-
+            // для кожної пари створюємо вузли і додаємо їх до мінімальної кучі
             foreach (var pair in freqChar)
             {
                 var key = pair.Key.ToString();
@@ -147,7 +152,7 @@ namespace Huffman
                 };
                 minHeap.Add(node);
             }
-
+            // Починаємо будувати дерево Хаффмана
             while (minHeap.data.Count > 1)
             {
                 var m1 = minHeap.Pop();
@@ -161,7 +166,7 @@ namespace Huffman
                 };
                 minHeap.Add(m1_m2);
             }
-
+            // Генерація кодів Хаффмана
             if (minHeap.data.Count > 0)
             {
                 var root = minHeap.Pop();
@@ -172,7 +177,7 @@ namespace Huffman
                         var path = new List<int>();
                         path = root.Search(pair.Key.ToString(), path);
                         codeDictionary.Add(pair.Key, path);
-                        Console.Write($"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}: ");
+                        Console.Write($"{pair.Key.ToString().Replace("\n", "\\n").Replace("\r", "\\r").Replace(" ", "_")}- ");
                         if (path != null)
                             foreach (var bit in path)
                             {
@@ -183,18 +188,20 @@ namespace Huffman
                 }
             }
 
-            // Decoding part
+            // Створюємо закодований текст
             var encodedText = new List<int>();
-            using (StreamReader reader = new StreamReader(outputFilePath))
+            foreach (var letter in text)
             {
-                var line = "";
-                while (( line = reader.ReadLine()) != null)
+                var path = codeDictionary[letter];
+                encodedText.AddRange(path);
+            }
+
+            // Записуємо закодований текст у файл outputFilePath
+            using (StreamWriter writer = new StreamWriter(outputFilePath))
+            {
+                foreach (var bit in encodedText)
                 {
-                    foreach (char character in line)
-                    {
-                        int bit = int.Parse(character.ToString());
-                        encodedText.Add(bit);
-                    }
+                    writer.Write(bit);
                 }
             }
 
@@ -213,6 +220,7 @@ namespace Huffman
                     }
                 }
             }
+
             static bool ListsEqual(List<int> list1, List<int> list2)
             {
                 if (list1.Count != list2.Count)
@@ -220,24 +228,14 @@ namespace Huffman
 
                 for (int i = 0; i < list1.Count; i++)
                 {
-                    if (list1[i] != list2[i])
+                     if (list1[i] != list2[i])
                         return false;
                 }
 
                 return true;
             }
 
-            // Writing decoded text to file
-            using (StreamWriter writer = new StreamWriter(decodedFilePath))
-            {
-                foreach (var character in decodedText)
-                {
-                    writer.Write(character);
-                }
-            }
-
             Console.WriteLine("Text has been decoded and written to file successfully.");
-
             // Writing encoded text to console
             Console.WriteLine("Encoded text:");
             foreach (var bit in encodedText)
@@ -245,7 +243,7 @@ namespace Huffman
                 Console.Write(bit);
             }
             Console.WriteLine();
-
+            
             // Writing encoded text to file
             using (StreamWriter writer = new StreamWriter(outputFilePath))
             {
@@ -255,11 +253,12 @@ namespace Huffman
                 }
             }
 
-            Console.WriteLine("Text has been encoded and written to file successfully.");
+            
             Console.WriteLine("Decoded text:");
             string decodedContent = File.ReadAllText(decodedFilePath);
             Console.WriteLine(decodedContent);
         }
     }
 }
+
 
