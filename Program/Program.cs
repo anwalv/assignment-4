@@ -234,7 +234,13 @@ namespace Huffman
 
                 return true;
             }
-
+            using (StreamWriter writer = new StreamWriter(decodedFilePath))
+            {
+                foreach (var character in decodedText)
+                {
+                    writer.Write(character);
+                }
+            }
             Console.WriteLine("Text has been decoded and written to file successfully.");
             // Writing encoded text to console
             Console.WriteLine("Encoded text:");
